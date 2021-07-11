@@ -1,22 +1,43 @@
+
+// const express = require('express')
+// const router = express.Router()
+
 // export routes
 module.exports = () => {
-  router.post('/signup', new SignupRouter().route)
+  const router = new SignupRouter()
+  router.post('/signup', ExpressRouterAdapter().adapter(router))
 }
 
-// signup-router
-const express = require('express')
-const router = express.Router()
-class SignupRouter {
-  async route (req, res) {
-    const { email, password, repeatPassword } = req.body
-    const user = new SignupUseCase().signup(email, password, repeatPassword)
-    if (!user) {
-      res.status(400).json({ error: 'password must be equal to repeatPassword' })
+// express-router-adapter
+class ExpressRouterAdapter {
+  static adapter (router) {
+    return async (req, res) => {
+      const httpRequest = {
+        body: req.body
+      }
+      const httpResponse = await router.route(httpRequest)
+      res.status(httpResponse.statusCode).json(httpResponse.body)
     }
-    res.status(200).json({ message: 'User created successfully' })
   }
 }
 
+// presentation layer
+// signup-router
+class SignupRouter {
+  async route (httpRequest) {
+    const { email, password, repeatPassword } = httpRequest.body
+    const user = new SignupUseCase().signup(email, password, repeatPassword)
+    if (!user) {
+      httpRequest.status(400).json({ error: 'password must be equal to repeatPassword' })
+    }
+    return {
+      statusCode: 200,
+      body: user
+    }
+  }
+}
+
+// domain
 // signup-usecase
 class SignupUseCase {
   async signup (email, password, repeatPassword) {
@@ -26,6 +47,8 @@ class SignupUseCase {
   }
 }
 
+// infra layer
+// add-account-repositoy
 const mongoose = require('mongoose')
 const AccountModel = mongoose.model('Account')
 class AddAccountRepository {
