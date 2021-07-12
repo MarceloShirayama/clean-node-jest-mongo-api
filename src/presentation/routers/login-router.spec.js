@@ -2,15 +2,28 @@ const LoginRouter = require('./login-router')
 const MissingParamError = require('../helper/missing-param-error')
 const UnauthorizedError = require('../helper/unauthorized-error')
 const ServerError = require('../helper/server-error')
+const InvalidParamError = require('../helper/invalid-param-error')
 
 const makeSut = () => {
   const authUseCaseSpy = makeAuthUseCase()
-  authUseCaseSpy.accessToken = 'valid_token'
-  const sut = new LoginRouter(authUseCaseSpy)
+  const emailValidatorSpy = makeEmailValidator()
+  const sut = new LoginRouter(authUseCaseSpy, emailValidatorSpy)
   return {
     authUseCaseSpy,
+    emailValidatorSpy,
     sut
   }
+}
+
+const makeEmailValidator = () => {
+  class EmailValidatorSpy {
+    isValid (email) {
+      return this.isEmailValid
+    }
+  }
+  const emailValidatorSpy = new EmailValidatorSpy()
+  emailValidatorSpy.isEmailValid = true
+  return emailValidatorSpy
 }
 
 const makeAuthUseCase = () => {
@@ -21,7 +34,9 @@ const makeAuthUseCase = () => {
       return this.accessToken
     }
   }
-  return new AuthUseCaseSpy()
+  const authUseCaseSpy = new AuthUseCaseSpy()
+  authUseCaseSpy.accessToken = 'valid_token'
+  return authUseCaseSpy
 }
 
 const makeAuthUseCaseWithError = () => {
@@ -155,16 +170,17 @@ describe('Login Router', () => {
     expect(httpResponse.body).toEqual(new ServerError())
   })
 
-  // test('Should return 400 if an invalid email is provided', async () => {
-  //   const { sut } = makeSut()
-  //   const httpRequest = {
-  //     body: {
-  //       email: 'invalid_email',
-  //       password: 'any_password'
-  //     }
-  //   }
-  //   const httpResponse = await sut.route(httpRequest)
-  //   expect(httpResponse.statusCode).toBe(400)
-  //   expect(httpResponse.body).toEqual(new InvalidParamError('email'))
-  // })
+  test('Should return 400 if an invalid email is provided', async () => {
+    const { sut, emailValidatorSpy } = makeSut()
+    emailValidatorSpy.isEmailValid = false
+    const httpRequest = {
+      body: {
+        email: 'invalid_email',
+        password: 'any_password'
+      }
+    }
+    const httpResponse = await sut.route(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body).toEqual(new InvalidParamError('email'))
+  })
 })
