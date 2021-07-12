@@ -8,7 +8,7 @@
     "start": "node .",
     "test": "jest --colors",
     "test:unit": "yarn test --watch --silent --runInBand -c jest-unit-config.js",
-    "test:integration": "yarn test --watch -c jest-integration-config.js",
+    "test:integration": "yarn test --watch --silent --runInBand -c jest-integration-config.js",
     "test:ci": "yarn jest --coverage --noStackTrace --silent --passWithNoTests  --runInBand --colors",
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix"
