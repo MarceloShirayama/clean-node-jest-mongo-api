@@ -10,9 +10,9 @@
 #echo -e "\e[1;32m Enter commit message: \e[0m";
 COLOR='\033[1;33m';
 git s;
-git add .;
 printf "${COLOR}Enter commit message:\n";
 read description_commit;
+git add .;
 yarn jest --noStackTrace --silent --passWithNoTests   --runInBand --colors;
 yarn lint:fix;
 
