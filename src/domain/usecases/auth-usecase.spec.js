@@ -1,4 +1,4 @@
-const { MissingParamError, InvalidParamError } = require('../../utils/errors')
+const { MissingParamError } = require('../../utils/errors')
 const AuthUseCase = require('./auth-usecase')
 
 const makeSut = () => {
@@ -37,7 +37,7 @@ describe('Auth Use Case', () => {
   it('Should  throws an error if LoadUserByEmailRepository is not provided', async () => {
     const sut = new AuthUseCase()
     const promise = sut.auth('any_email@mail.com', 'any_password')
-    expect(promise).rejects.toThrow(new MissingParamError('loadUserByEmailRepository'))
+    expect(promise).rejects.toThrow()
   })
 
   it('Should  throws an error if LoadUserByEmailRepository has no load method', async () => {
@@ -45,7 +45,7 @@ describe('Auth Use Case', () => {
     const loadUserByEmailRepositorySpy = new LoadUserByEmailRepositorySpy()
     const sut = new AuthUseCase(loadUserByEmailRepositorySpy)
     const promise = sut.auth('any_email@mail.com', 'any_password')
-    expect(promise).rejects.toThrow(new InvalidParamError('loadUserByEmailRepository.load method'))
+    expect(promise).rejects.toThrow()
   })
 
   it('Should  return null if LoadUserByEmailRepository retuns null', async () => {
