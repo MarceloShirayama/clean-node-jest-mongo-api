@@ -13,10 +13,14 @@ git s;
 printf "${COLOR}Enter commit message:\n";
 read description_commit;
 yarn jest --noStackTrace --silent --passWithNoTests   --runInBand --colors;
+printf "${COLOR}lint:fix\n";
 yarn lint:fix;
+
 
 if [ $? -eq 0 ];
 then
+    printf "${COLOR}git add --all\n";
     git add .;
+    printf "${COLOR}git commit\n";
     git commit -m "${description_commit}";
 fi
