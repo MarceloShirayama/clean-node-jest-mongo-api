@@ -12,7 +12,6 @@ COLOR='\033[1;33m';
 git s;
 printf "${COLOR}Enter commit message:\n";
 read description_commit;
-git add .;
 yarn jest --noStackTrace --silent --passWithNoTests   --runInBand --colors;
 yarn lint:fix;
 
