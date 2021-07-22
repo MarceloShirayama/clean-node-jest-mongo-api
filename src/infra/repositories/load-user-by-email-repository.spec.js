@@ -45,4 +45,10 @@ describe('Load User by Email Repository', () => {
     const { _id, password } = fakeUser.ops[0]
     expect(user).toEqual({ _id, password })
   })
+
+  it('Should throw error if userModel is not provided', async () => {
+    const sut = new LoadUserByEmailRepository()
+    const promise = sut.load('any_email@mail.com')
+    expect(promise).rejects.toThrow()
+  })
 })
