@@ -7,7 +7,6 @@ describe('Headers Middlewares', () => {
       res.send('')
     })
     const response = await request(app).get('/test_cors')
-    console.log(response.headers)
     expect(response.headers['access-control-allow-origin']).toBe('*')
     expect(response.headers['access-control-allow-methods']).toBe('*')
     expect(response.headers['access-control-allow-headers']).toBe('*')
