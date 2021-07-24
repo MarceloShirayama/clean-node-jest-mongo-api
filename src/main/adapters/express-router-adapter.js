@@ -5,7 +5,7 @@ module.exports = class ExpressRouterAdapter {
         body: req.body
       }
       const httpResponse = await router.route(httpRequest)
-      res.status(httpResponse.status).json(httpResponse.body)
+      res.status(httpResponse.statusCode).json(httpResponse.body)
     }
   }
 }
