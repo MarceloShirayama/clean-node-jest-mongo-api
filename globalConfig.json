@@ -1,5 +1,1 @@
-<<<<<<< Updated upstream
-{"mongoUri":"mongodb://127.0.0.1:42657/","mongoDBName":"jest"}
-=======
-{"mongoUri":"mongodb://127.0.0.1:42925/","mongoDBName":"jest"}
->>>>>>> Stashed changes
+{"mongoUri":"mongodb://127.0.0.1:33539/","mongoDBName":"jest"}
