@@ -1,0 +1,14 @@
+## Variables
+@host={{$dotenv SERVER_HOST}}
+@port={{$dotenv SERVER_PORT}}
+@route=api/login
+@url_base=http://{{host}}:{{port}}/{{route}}
+
+## POST Login
+POST {{url_base}}
+Content-Type: application/json
+
+{
+  "email": "mango@gmail.com",
+  "password": "hashed_password"
+}
