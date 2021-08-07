@@ -8,8 +8,8 @@
     "start": "node .",
     "dev": "nodemon .",
     "test": "jest --colors",
-    "test:unit": "npm test --watch --silent --runInBand -c jest-unit-config.js",
-    "test:integration": "npm test --watch --silent --runInBand -c jest-integration-config.js",
+    "test:unit": "npm test -- --watch --silent --runInBand -c jest-unit-config.js",
+    "test:integration": "npm test -- --watch --silent --runInBand -c jest-integration-config.js",
     "test:ci": "npm test --coverage --silent",
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix"
